@@ -1,0 +1,14 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+variables:
+  imageName: 'seesharprun/cosmosbenchmark'
+  imageLatestName: '$(imageName):latest'
+  imageVersionName: '$(imageName):$(build.buildId)'
+steps:
+- script: docker build . --file Dockerfile --tag $(imageLatestName) --tag $(imageVersionName)
+  displayName: 'Docker build'
+  workingDirectory: ./CosmosBenchmark.Console
+- script: docker login --username $(docker.hub.username) --password $(docker.hub.password)
+  displayName: 'Login to Docker Hub'
+- script: docker push $(imageName)
+  displayName: 'Push to Docker Hub'

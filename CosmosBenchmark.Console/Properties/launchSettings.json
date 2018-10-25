@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CosmosDemo.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "--location eastus2"
+    }
+  }
+}
