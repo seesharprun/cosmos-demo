@@ -61,8 +61,8 @@
               ],
               "resources": {
                 "requests": {
-                  "cpu": "1.0",
-                  "memoryInGb": "1.5"
+                  "cpu": "2.0",
+                  "memoryInGb": "4.0"
                 }
               }
             }
@@ -101,8 +101,8 @@
               ],
               "resources": {
                 "requests": {
-                  "cpu": "1.0",
-                  "memoryInGb": "1.5"
+                  "cpu": "4.0",
+                  "memoryInGb": "12.0"
                 }
               }
             }

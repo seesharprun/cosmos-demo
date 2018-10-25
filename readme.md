@@ -31,17 +31,19 @@ Throughout this setup section, we will share animated images that will help you 
 
     > A typicaly deployment takes approximately ten minutes.
 
-1. Once your environment is deployed, you can observe the Azure Cosmos DB account in your Azure subscription:
+1. Once your environment is deployed, you can observe the Azure Cosmos DB account in your Azure subscription.
 
     ![Deployed Resource Group](media/go_to_cosmos.gif)
 
     > The name of your resource group may differ from the screenshots.
 
-1. Go to your resource group, locate and select the **Azure Container Instance** with **-populate-* in the name:
+1. Go to your resource group, locate and select the **Azure Container Instance** with **-populate-** in the name.
 
     ![Populate Container](media/go_to_aci_populate.gif)
 
-1. In the **Settings** section of the container instance, select the **Containers** option to view your currently running container.
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+1. Click the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
 
     ![Running Container](media/aci_connect.gif)
 
@@ -108,6 +110,18 @@ Throughout this setup section, we will share animated images that will help you 
 
     ![Save New Document](media/save_document.gif)
 
+1. Finally in the Data Explorer, select the **DeviceDataCollection** collection and then click the **Settings** option.
+
+    ![Collection Settings]()
+
+1. In the settings pane, change the throughput of the collection to ``10000`` RUs (request units).
+
+    > It is typical to use more RUs for a data import task and then to scale back down to your "normal" thoughput allocation.
+
+1. Click the **Save** button at the top of the settings pane.
+
+    ![Save Settings]()
+
 ===
 
 # Scalability and elasticity with Azure Cosmos DB
@@ -116,11 +130,87 @@ For the first demo, we will compare write performance at two different throughpu
 
 ## Step-by-step instructions
 
-1. To start, we will go into the Azure Cosmos DB account. This can be accomplished by clicking on the **Resource Groups** link in the Azure portal, selecting your previously created group and then selecting the sole **Azure Cosmos DB** resource:
+1. To start, we will go into the Azure Cosmos DB account. This can be accomplished by clicking on the **Resource Groups** link in the portal, selecting your previously created group and then selecting the sole **Azure Cosmos DB** resource.
 
     ![Selecting Azure Cosmos DB account](media/cosmos_account.png)
 
-1.
+1. In the Azure Cosmos DB resource's blade, select the **Data Explorer**.
+
+    ![Data Explorer]()
+
+1. In the **Data Explorer**, click the **New Collection** button.
+
+    ![New Collection]()
+
+    > You can call out to attendees that you will create a new collection where you intend to perform the demo.
+
+1. In the **New Collection** popup, perform the following actions:
+
+    1.
+
+    1.
+
+    1.
+
+    1.
+
+    1. Click the **** button.
+
+    ![New Collection Options]()
+
+1. Click on the **Resource Groups** link in the portal, and then select the **Container instances** resource with **-westus-** in the name.
+
+    ![]()
+
+    > Point out to attendees that you are selecting a container that is running in the same region as your Azure Cosmos DB account.
+
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+    ![]()
+
+1. Click the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+    ![]()
+
+1. Within the container, run the following command to benchmark the write performance of your Azure Cosmos DB instance:
+
+    ```
+    ./cosmosbenchmark --location westus --type write --database TestDatabase --collection ThroughputDemo --throughput 5000
+    ```
+
+    ![]()
+    
+1. Click on the **Resource Groups** link in the portal, and then select the sole **Azure Cosmos DB** resource.
+
+1. In the Azure Cosmos DB resource's blade, select the **Data Explorer**.
+
+1. In the Data Explorer, expand the **TestDatabase** database, select the **ThroughputDemo** collection, and then click the **Settings** option.
+
+    ![]()
+  
+1. In the settings pane, change the throughput of the collection to ``50000`` RUs (request units).
+
+1. Click the **Save** button at the top of the settings pane.
+
+    ![]()
+
+1. Click on the **Resource Groups** link in the portal, and then select the **Container instances** resource with **-westus-** in the name.
+
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+1. Click the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+1. Within the container, run the following command to benchmark the write performance of your Azure Cosmos DB instance again with the new throughput level:
+
+    ```
+    ./cosmosbenchmark --location westus --type write --database TestDatabase --collection ThroughputDemo --throughput 50000
+    ```
+
+    > Point out to attendees the difference in performance between the two benchmarks.
+
+## More Reading
+
+If attendees want to learn more about scaling throughput in Azure Cosmos DB, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/request-units>
 
 ===
 
@@ -132,6 +222,10 @@ For the first demo, we will compare write performance at two different throughpu
 
 1. 
 
+## More Reading
+
+If attendees want to learn more about Azure Cosmos DB and global distribution, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/distribute-data-globally>
+
 ===
 
 # Document Flexibility using Azure Cosmos DB
@@ -141,5 +235,9 @@ For the first demo, we will compare write performance at two different throughpu
 ## Step-by-step instructions
 
 1. 
+
+## More Reading
+
+If attendees want to learn more about modeling flexibly structed data in Azure Cosmos DB, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/modeling-data>
 
 ===
