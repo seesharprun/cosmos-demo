@@ -1,0 +1,17 @@
+title: 'Scaling, Performance, and Flexibility in Azure Cosmos DB'
+description: 'This demo script will help you demonstrate Azure Cosmos DB to an audience.'
+remote_theme: azure-immersion/cosmos-jekyll-theme
+exclude:
+  - CosmosBenchmark.Console/
+  - .dockerignore
+  - .azure-pipelines.yml
+  - .azuredeploy.json
+  - .CosmosBenchmark.sln
+plugins:
+  - jekyll-sitemap
+  - jekyll-mentions
+  - jemoji
+markdown: kramdown
+kramdown:
+   syntax_highlighter_opts:
+      disable : true
