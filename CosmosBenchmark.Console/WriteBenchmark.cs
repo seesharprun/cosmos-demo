@@ -71,22 +71,18 @@ namespace CosmosBenchmark
             await BenchmarkCollectionAsync(client, collection, settings.NumberOfDocumentsToInsert, taskCount);
         }
 
-        public async Task BenchmarkCollectionAsync(DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert, int taskCount, bool outputProgress = true)
+        private async Task BenchmarkCollectionAsync(DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert, int taskCount)
         {
             int minThreadPoolSize = 100;
             ThreadPool.SetMinThreads(minThreadPoolSize, minThreadPoolSize);
 
-            if (outputProgress) {
-                await Console.Out.WriteLineAsync($"Starting Inserts with {taskCount} tasks");
-            }
+            await Console.Out.WriteLineAsync($"Starting Inserts with {taskCount} tasks");
 
             pendingTaskCount = taskCount;
             List<Task> tasks = new List<Task>();
-            if (outputProgress) {
-                tasks.Add(
-                    this.LogOutputStatsAsync()
-                );
-            }
+            tasks.Add(
+                this.LogOutputStatsAsync()
+            );
 
             for (int i = 0; i < taskCount; i++)
             {
@@ -98,7 +94,7 @@ namespace CosmosBenchmark
             await Task.WhenAll(tasks);
         }
 
-        public async Task InsertDocumentAsync(int taskId, DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert)
+        private async Task InsertDocumentAsync(int taskId, DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert)
         {
             requestUnitsConsumed[taskId] = 0;
             string partitionKeyProperty = collection.PartitionKey.Paths[0].Replace("/", "");
@@ -134,7 +130,7 @@ namespace CosmosBenchmark
             Interlocked.Decrement(ref this.pendingTaskCount);
         }
 
-        public async Task LogOutputStatsAsync()
+        private async Task LogOutputStatsAsync()
         {
             long lastCount = 0;
             double lastRequestUnits = 0;
@@ -183,7 +179,7 @@ namespace CosmosBenchmark
             await Console.Out.WriteLineAsync();
         }
 
-        public async Task<Database> EnsureDatabaseResourceAsync(DocumentClient client, string databaseId)
+        private async Task<Database> EnsureDatabaseResourceAsync(DocumentClient client, string databaseId)
         {
             Database database = new Database { Id = databaseId };
             database = await client.CreateDatabaseIfNotExistsAsync(database);
@@ -191,7 +187,7 @@ namespace CosmosBenchmark
             return database;
         }
 
-        public async Task<DocumentCollection> EnsureCollectionResourceAsync(DocumentClient client, Database database, CollectionSettings collectionSetting)
+        private async Task<DocumentCollection> EnsureCollectionResourceAsync(DocumentClient client, Database database, CollectionSettings collectionSetting)
         {
             DocumentCollection collection = new DocumentCollection
             {
