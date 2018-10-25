@@ -17,7 +17,21 @@ This section should be completed prior to starting the demo. In this section, yo
 - Azure Container Instances in Brazil South, North Europe, and West US regions
     - These instances will be used to test global performance of the account
 
-To get started, you must first deploy an [ARM Template](azuredeploy.json) that will deploy all of those resources and correctly configure them. For ease, you can click the link below to deploy your ARM template:
+To get started, you must first deploy an [ARM template](azuredeploy.json) that will deploy all of those resources and correctly configure them.
+
+> If you are using LODS as your demo environment, this ARM template will already have been deployed for you. There is no need to deploy the template a second time.
+
+For ease, you can click the link below to deploy your ARM template:
+
+[![Deploy to Azure](media/deploytoazure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fseesharprun%2Fcosmos-demo%2Fmaster%2Fazuredeploy.json)
+
+Once your environment is deployed, you can observe the resource group in your Azure subscription:
+
+![Deployed Resource Group]()
+
+> The name of your resource group may differ from the screenshots.
+
+
 
 ===
 

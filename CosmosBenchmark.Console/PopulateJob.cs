@@ -63,14 +63,14 @@ namespace CosmosBenchmark
             await Console.Out.WriteLineAsync($"Database\t\t{settings.Database}");
             await Console.Out.WriteLineAsync($"Collection\t\t{collectionSetting.Id}");
             await Console.Out.WriteLineAsync($"Partition Key:\t\t{String.Join(", ", collectionSetting.PartitionKeys)}");
-            await Console.Out.WriteLineAsync($"Populate Operation:\tInserting {settings.NumberOfDocumentsToInsert} Documents Total");
+            await Console.Out.WriteLineAsync($"Populate Operation:\tInserting {settings.NumberOfDocumentsToPopulate} Documents Total");
             await Console.Out.WriteLineAsync("--------------------------------------------------------------------- ");
             await Console.Out.WriteLineAsync();
 
             await PopulateCollectionAsync(client, collection, settings.NumberOfDocumentsToPopulate, taskCount);
         }
 
-        private async Task PopulateCollectionAsync(DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert, int taskCount)
+        private async Task PopulateCollectionAsync(DocumentClient client, DocumentCollection collection, int numberOfDocumentsToPopulate, int taskCount)
         {
             int minThreadPoolSize = 100;
             ThreadPool.SetMinThreads(minThreadPoolSize, minThreadPoolSize);
@@ -84,19 +84,19 @@ namespace CosmosBenchmark
             for (int i = 0; i < taskCount; i++)
             {
                 tasks.Add(
-                    InsertDocumentAsync(i, client, collection, numberOfDocumentsToInsert / taskCount)
+                    InsertDocumentAsync(i, client, collection, numberOfDocumentsToPopulate / taskCount)
                 );
             }
 
             await Task.WhenAll(tasks);
         }
 
-        private async Task InsertDocumentAsync(int taskId, DocumentClient client, DocumentCollection collection, int numberOfDocumentsToInsert)
+        private async Task InsertDocumentAsync(int taskId, DocumentClient client, DocumentCollection collection, int numberOfDocumentsToPopulate)
         {
             requestUnitsConsumed[taskId] = 0;
             string partitionKeyProperty = collection.PartitionKey.Paths[0].Replace("/", "");
 
-            for (int i = 0; i < numberOfDocumentsToInsert; i++)
+            for (int i = 0; i < numberOfDocumentsToPopulate; i++)
             {
                 DeviceRecording document = recordingGenerator.Generate();
                 try

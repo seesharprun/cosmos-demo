@@ -25,8 +25,7 @@ namespace CosmosBenchmark
         }
 
         private static async Task RunLogic(Options options)
-        {         
-
+        {       
             IConfigurationBuilder builder = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .AddJsonFile($"appsettings.json");
@@ -39,10 +38,14 @@ namespace CosmosBenchmark
             await Console.Out.WriteLineAsync($"Task Type:\t{options.Type.GetDisplayName()}");               
 
             await Console.Out.WriteLineAsync($"Endpoint Uri:\t{endpointUrl}");
-            await Console.Out.WriteLineAsync($"Primary Key:\t{primaryKey}");  
+            await Console.Out.WriteLineAsync($"Primary Key:\t{primaryKey}"); 
+
+            await Console.Out.WriteLineAsync($"Database:\t{options.Database}");
+            await Console.Out.WriteLineAsync($"Collection:\t{options.Collection}"); 
+            await Console.Out.WriteLineAsync($"Throughput:\t{options.Throughput}");
 
             ConnectionPolicy policy = new ConnectionPolicy();
-            CosmosSettings settings = new CosmosSettings(); 
+            CosmosSettings settings = new CosmosSettings();
 
             configuration.GetSection(nameof(ConnectionPolicy)).Bind(policy);
             configuration.GetSection(nameof(CosmosSettings)).Bind(settings);
@@ -54,6 +57,9 @@ namespace CosmosBenchmark
 
             settings.EndpointUri = new Uri(endpointUrl, UriKind.Absolute);
             settings.PrimaryKey = primaryKey;
+            settings.Database = options.Database;
+            settings.Collection = options.Collection;
+            settings.Throughput = options.Throughput;
 
             using (DocumentClient client = new DocumentClient(settings.EndpointUri, settings.PrimaryKey, policy))
             {

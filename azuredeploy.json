@@ -1,63 +1,198 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {},
-    "variables": {
-      "cosmosAccountName": "[concat('cosmos-', uniqueString(resourceGroup().id))]",
-      "containerImage": "seesharprun/cosmosbenchmark:latest",
-      "containerInstanceName": "[concat('benchmark-', uniqueString(resourceGroup().id))]"
-    },
-    "resources": [
-      {
-        "type": "Microsoft.DocumentDB/databaseAccounts",
-        "apiVersion": "2015-04-08",
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "variables": {
+    "cosmosAccountName": "[concat('cosmos-', uniqueString(resourceGroup().id))]",
+    "containerImage": "seesharprun/cosmosbenchmark:latest",
+    "containerInstancePrefix": "benchmark",
+    "primaryLocation": "westus"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "2015-04-08",
+      "name": "[variables('cosmosAccountName')]",
+      "location": "[variables('primaryLocation')]",
+      "properties": {
         "name": "[variables('cosmosAccountName')]",
-        "location": "[resourceGroup().location]",
-        "properties": {
-          "name": "[variables('cosmosAccountName')]",
-          "databaseAccountOfferType": "Standard"
-        }
-      },
-      {
-        "type": "Microsoft.ContainerInstance/containerGroups",
-        "apiVersion": "2018-10-01",
-        "name": "[variables('containerInstanceName')]",
-        "location": "[resourceGroup().location]",
-        "properties": {
-          "containers": [
-            {
-              "name": "[variables('containerInstanceName')]",
-              "properties": {
-                "command": [
-                  "tail",
-                  "-f",
-                  "/dev/null"
-                ],
-                "image": "[variables('containerImage')]",
-                "ports": [],
-                "environmentVariables": [
-                  {
-                    "name": "COSMOS_URI",
-                    "value": "[reference(concat('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosAccountName'))).documentEndpoint]"
-                  },
-                  {
-                    "name": "COSMOS_KEY",
-                    "value": "[listKeys(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('cosmosAccountName')), '2015-04-08').primaryMasterKey]"
-                  }
-                ],
-                "resources": {
-                  "requests": {
-                    "cpu": "1.0",
-                    "memoryInGb": "1.5"
-                  }
+        "databaseAccountOfferType": "Standard",
+        "locations": [
+          {
+            "locationName": "westus",
+            "failoverPriority": 0
+          },
+          {
+            "locationName": "brazilsouth",
+            "failoverPriority": 1
+          },
+          {
+            "locationName": "northeurope",
+            "failoverPriority": 2
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(concat(variables('containerInstancePrefix'), '-populate-', uniqueString(resourceGroup().id))]",
+      "location": "[variables('primaryLocation')]",
+      "properties": {
+        "containers": [
+          {
+            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "properties": {
+              "command": [
+                "tail",
+                "-f",
+                "/dev/null"
+              ],
+              "image": "[variables('containerImage')]",
+              "ports": [],
+              "environmentVariables": [
+                {
+                  "name": "COSMOS_URI",
+                  "value": "[reference(concat('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosAccountName'))).documentEndpoint]"
+                },
+                {
+                  "name": "COSMOS_KEY",
+                  "value": "[listKeys(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('cosmosAccountName')), '2015-04-08').primaryMasterKey]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1.0",
+                  "memoryInGb": "1.5"
                 }
               }
             }
-          ],
-          "restartPolicy": "OnFailure",
-          "osType": "Linux"
-        }
+          }
+        ],
+        "restartPolicy": "OnFailure",
+        "osType": "Linux"
       }
-    ],
-    "outputs": {}
-  }
+    },
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(concat(variables('containerInstancePrefix'), '-westus-', uniqueString(resourceGroup().id))]",
+      "location": "[variables('primaryLocation')]",
+      "properties": {
+        "containers": [
+          {
+            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "properties": {
+              "command": [
+                "tail",
+                "-f",
+                "/dev/null"
+              ],
+              "image": "[variables('containerImage')]",
+              "ports": [],
+              "environmentVariables": [
+                {
+                  "name": "COSMOS_URI",
+                  "value": "[reference(concat('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosAccountName'))).documentEndpoint]"
+                },
+                {
+                  "name": "COSMOS_KEY",
+                  "value": "[listKeys(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('cosmosAccountName')), '2015-04-08').primaryMasterKey]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1.0",
+                  "memoryInGb": "1.5"
+                }
+              }
+            }
+          }
+        ],
+        "restartPolicy": "OnFailure",
+        "osType": "Linux"
+      }
+    },
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(concat(variables('containerInstancePrefix'), '-brazilsouth-', uniqueString(resourceGroup().id))]",
+      "location": "brazilsouth",
+      "properties": {
+        "containers": [
+          {
+            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "properties": {
+              "command": [
+                "tail",
+                "-f",
+                "/dev/null"
+              ],
+              "image": "[variables('containerImage')]",
+              "ports": [],
+              "environmentVariables": [
+                {
+                  "name": "COSMOS_URI",
+                  "value": "[reference(concat('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosAccountName'))).documentEndpoint]"
+                },
+                {
+                  "name": "COSMOS_KEY",
+                  "value": "[listKeys(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('cosmosAccountName')), '2015-04-08').primaryMasterKey]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1.0",
+                  "memoryInGb": "1.5"
+                }
+              }
+            }
+          }
+        ],
+        "restartPolicy": "OnFailure",
+        "osType": "Linux"
+      }
+    },
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2018-10-01",
+      "name": "[concat(concat(variables('containerInstancePrefix'), '-northeurope-', uniqueString(resourceGroup().id))]",
+      "location": "northeurope",
+      "properties": {
+        "containers": [
+          {
+            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "properties": {
+              "command": [
+                "tail",
+                "-f",
+                "/dev/null"
+              ],
+              "image": "[variables('containerImage')]",
+              "ports": [],
+              "environmentVariables": [
+                {
+                  "name": "COSMOS_URI",
+                  "value": "[reference(concat('Microsoft.DocumentDb/databaseAccounts/', variables('cosmosAccountName'))).documentEndpoint]"
+                },
+                {
+                  "name": "COSMOS_KEY",
+                  "value": "[listKeys(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('cosmosAccountName')), '2015-04-08').primaryMasterKey]"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": "1.0",
+                  "memoryInGb": "1.5"
+                }
+              }
+            }
+          }
+        ],
+        "restartPolicy": "OnFailure",
+        "osType": "Linux"
+      }
+    }
+  ],
+  "outputs": {}
+}
