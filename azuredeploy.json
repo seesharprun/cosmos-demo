@@ -5,15 +5,14 @@
   "variables": {
     "cosmosAccountName": "[concat('cosmos-', uniqueString(resourceGroup().id))]",
     "containerImage": "seesharprun/cosmosbenchmark:latest",
-    "containerInstancePrefix": "benchmark",
-    "primaryLocation": "westus"
+    "containerInstancePrefix": "benchmark"
   },
   "resources": [
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "2015-04-08",
       "name": "[variables('cosmosAccountName')]",
-      "location": "[variables('primaryLocation')]",
+      "location": "westus",
       "properties": {
         "name": "[variables('cosmosAccountName')]",
         "databaseAccountOfferType": "Standard",
@@ -23,7 +22,7 @@
             "failoverPriority": 0
           },
           {
-            "locationName": "brazilsouth",
+            "locationName": "southeastasia",
             "failoverPriority": 1
           },
           {
@@ -36,12 +35,12 @@
     {
       "type": "Microsoft.ContainerInstance/containerGroups",
       "apiVersion": "2018-10-01",
-      "name": "[concat(concat(variables('containerInstancePrefix'), '-populate-', uniqueString(resourceGroup().id))]",
-      "location": "[variables('primaryLocation')]",
+      "name": "[concat(variables('containerInstancePrefix'), '-populate-', uniqueString(resourceGroup().id))]",
+      "location": "westus",
       "properties": {
         "containers": [
           {
-            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "name": "[concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
             "properties": {
               "command": [
                 "tail",
@@ -76,12 +75,12 @@
     {
       "type": "Microsoft.ContainerInstance/containerGroups",
       "apiVersion": "2018-10-01",
-      "name": "[concat(concat(variables('containerInstancePrefix'), '-westus-', uniqueString(resourceGroup().id))]",
-      "location": "[variables('primaryLocation')]",
+      "name": "[concat(variables('containerInstancePrefix'), '-westus-', uniqueString(resourceGroup().id))]",
+      "location": "westus",
       "properties": {
         "containers": [
           {
-            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "name": "[concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
             "properties": {
               "command": [
                 "tail",
@@ -116,12 +115,12 @@
     {
       "type": "Microsoft.ContainerInstance/containerGroups",
       "apiVersion": "2018-10-01",
-      "name": "[concat(concat(variables('containerInstancePrefix'), '-brazilsouth-', uniqueString(resourceGroup().id))]",
-      "location": "brazilsouth",
+      "name": "[concat(variables('containerInstancePrefix'), '-southeastasia-', uniqueString(resourceGroup().id))]",
+      "location": "southeastasia",
       "properties": {
         "containers": [
           {
-            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "name": "[concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
             "properties": {
               "command": [
                 "tail",
@@ -156,12 +155,12 @@
     {
       "type": "Microsoft.ContainerInstance/containerGroups",
       "apiVersion": "2018-10-01",
-      "name": "[concat(concat(variables('containerInstancePrefix'), '-northeurope-', uniqueString(resourceGroup().id))]",
+      "name": "[concat(variables('containerInstancePrefix'), '-northeurope-', uniqueString(resourceGroup().id))]",
       "location": "northeurope",
       "properties": {
         "containers": [
           {
-            "name": "[concat(concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
+            "name": "[concat(variables('containerInstancePrefix'), 'populate-', uniqueString(resourceGroup().id))]",
             "properties": {
               "command": [
                 "tail",
