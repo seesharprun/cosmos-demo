@@ -332,11 +332,11 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     > We are using our **West US** container instance to try and read data from the Azure Cosmos DB **Southeast Asia** read region. Unfortunately, our request has to be sent around the world and this causes a lot of latency. No matter what, you can't beat the speed of light (physics).
 
-    ![Read Benchmark - West US to Southeast Asia](media/)
+    ![Read Benchmark - West US to Southeast Asia](media/read_west_southeast_results.png)
 
 1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-southeastasia-** in the name.
 
-    ![Southeast Asia Container Instance](media/)
+    ![Southeast Asia Container Instance](media/container_instance_southeastasia.png)
 
 1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
 
@@ -352,11 +352,11 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     > We are now using the **Southeast Asia** container instance to try and read data from the Azure Cosmos DB **Southeast Asia** read region. You can see a  performance difference here. We have "cheated" the speed of light by bringing the data closer to the application/client.
 
-    ![Read Benchmark - Southeast Asia to Southeast Asia](media/)
+    ![Read Benchmark - Southeast Asia to Southeast Asia](media/read_southeast_results.png)
 
 1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-northeurope-** in the name.
 
-    ![North Europe Container Instance](media/)
+    ![North Europe Container Instance](media/container_instance_northeurope.png)
 
 1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
 
@@ -372,7 +372,7 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     > Since we have multiple clients and multiple Azure Cosmos DB read locations. We essentially have a CDN for dynamic data.
 
-    ![Read Benchmark - North Europe to North Europe](media/)
+    ![Read Benchmark - North Europe to North Europe](media/read_north_results.png)
 
 ## More Reading
 
