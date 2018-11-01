@@ -7,7 +7,7 @@ steps:
   displayName: 'Update package manager'
 - script: sudo apt-get install pandoc
   displayName: 'Install pandoc'
-- script: pandoc readme.md -o out/demo.docx --wrap=none
+- script: pandoc readme.md -s --wrap=none -o out/demo.docx
   displayName: 'Create Word document'
 - task: PublishBuildArtifacts@1
   inputs:
