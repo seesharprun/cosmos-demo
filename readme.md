@@ -10,6 +10,7 @@ This demo script will help you demonstrate Azure Cosmos DB to an audience. The s
 # Demo notes
 
 - The resource names may change in the screenshots. This occurs because the ARM template dynamically generates a unique name each time a demo is performed. You can safely disregard the resource names.
+- There is a known issue where the Azure Cosmos DB account requires 10 minutes to replicate globally after it is deployed. If you attempt to populate the database before then, you will see an exception message.
 
 ===
 
