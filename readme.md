@@ -374,6 +374,26 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     ![Read Benchmark - North Europe to North Europe](media/read_north_results.png)
 
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the sole **Azure Cosmos DB** resource again.
+
+1. In the Azure Cosmos DB resource's blade, select the **Default consistency** option.
+
+    ![Consistency Level Option](media/consistency_level_option.png)
+
+    > You can configure the default consistency level on your Cosmos DB account at any time. The default consistency level configured on your account applies to all Cosmos databases (and containers) under that account. All reads and queries issued against a container or a database will use that consistency level by default.
+
+1. Observe that the default consistency level is set to **Session**.
+
+    ![Session Consistency](media/session_consistency.png)
+
+    > Session consistency is a "middle of the road" consistency option that strikes a good balance between the polarized Strong and Eventual consistency options by enforcing strong consistency within a client session and eventual consistency for all other clients.
+
+1. Change the consistency level to **Eventual** and then click the **Save** button.
+
+    ![Eventual Consistency](media/eventual_consistency.png)
+
+    > You can change the default consistency level that is applied to all future requests. Eventual consistency improves read scalability, offers higher availability and often results in lower latency. The tradeoff is that a client may potentially see "stale" data.
+
 ## More Reading
 
 If attendees want to learn more about Azure Cosmos DB and global distribution, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/distribute-data-globally>
@@ -386,7 +406,21 @@ For the last demo, we will populate our Azure Cosmos DB instance with various do
 
 ## Step-by-step instructions
 
-1. 
+1. To start, we will go into the Azure Cosmos DB account. This can be accomplished by clicking on the **Resource Groups** link in the portal, selecting your previously created group, and then selecting the sole **Azure Cosmos DB** resource.
+
+    ![Selecting Azure Cosmos DB account](media/)
+
+1. In the Azure Cosmos DB resource's blade, select the **Data Explorer** option.
+
+    ![Data Explorer](media/)
+
+1. In the **Data Explorer**, locate and expand the existing **IoTDatabase** database. Then select the **DeviceDataCollection** collection.
+
+    ![Pre-Created Collection](media/)
+
+    > We are creating a new collection
+
+1. Click the **New SQL Query** button.
 
 ## More Reading
 
