@@ -27,7 +27,6 @@ namespace CosmosBenchmark
             await Console.Out.WriteLineAsync($"Database\t\t{settings.Database}");
             await Console.Out.WriteLineAsync($"Collection\t\t{collectionSetting.Id}");
             await Console.Out.WriteLineAsync($"Partition Key:\t\t{String.Join(", ", collectionSetting.PartitionKeys)}");
-            await Console.Out.WriteLineAsync($"Throughput:\t\t{collectionSetting.Throughput} Request Units per Second (RU/s)");
             await Console.Out.WriteLineAsync($"Read Operation:\tEnd-to-end performance for a document read operation");
             await Console.Out.WriteLineAsync("--------------------------------------------------------------------- ");
             await Console.Out.WriteLineAsync();
@@ -67,7 +66,7 @@ namespace CosmosBenchmark
             {
                 MaxDegreeOfParallelism = 0,
                 MaxItemCount = 1,
-                PartitionKey = new PartitionKey(collectionSetting.PartitionId)
+                PartitionKey = new PartitionKey($"{collectionSetting.PartitionId}")
             };
             return client.CreateDocumentQuery<Document>(collection.SelfLink, query, options).Single<Document>();
         }

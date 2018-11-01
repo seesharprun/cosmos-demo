@@ -20,7 +20,7 @@ namespace CosmosBenchmark
         [Option('c', "collection", Required = true, Default = "DeviceDataCollection", HelpText = "Set collection to use or create")]
         public string Collection { get; set; }
 
-        [Option('t', "throughput", Required = true, Default = 15000, HelpText = "Set throughput to use or create")]
+        [Option('t', "throughput", Required = false, Default = 15000, HelpText = "Set throughput to use or create")]
         public int Throughput { get; set; }
 
         public enum Types : int

@@ -21,13 +21,15 @@ Throughout this setup section, we will share animated images that will help you 
 
 ## Step-by-step instructions
 
-1. To get started, you must first deploy an [ARM template](azuredeploy.json) that will deploy all of those resources and correctly configure them.
+1. To get started, you must first deploy an [ARM template](azuredeploy.json) that will deploy all of the Azure Cosmos DB and Azure Container Instances resources and correctly configure them.
 
     > If you are using LODS as your demo environment, this ARM template will already have been deployed for you. There is no need to deploy the template a second time.
 
     For ease, you can click the link below to deploy your ARM template:
 
-    [![Deploy to Azure](media/deploytoazure.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fseesharprun%2Fcosmos-demo%2Fmaster%2Fazuredeploy.json)
+    <a href="https://portal.azure.com/#create/Microsoft.Template.2.0.0/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fseesharprun%2Fcosmos-demo%2Fmaster%2Fazuredeploy.json" target="_blank">
+        <img src="media/deploytoazure.png" alt="Deploy to Azure" />
+    </a>
 
     > A typicaly deployment takes approximately ten minutes.
 
@@ -126,7 +128,7 @@ Throughout this setup section, we will share animated images that will help you 
 
 # Scalability and elasticity with Azure Cosmos DB
 
-For the first demo, we will compare write performance at two different throughput levels. We will start with a low throughput level (10K-50K range) and then test writes using a higher throughput level (100K+ range).
+For the first demo, we will compare write performance at two different throughput levels. We will start with a low throughput level (10K-50K range) and then test writes using a higher throughput level (100K+ range). The goal in this demo is to show how performance and throughput is a "knob" that can be adjusted dynamically to meet an application's changing needs.
 
 ## Step-by-step instructions
 
@@ -190,7 +192,7 @@ For the first demo, we will compare write performance at two different throughpu
 
     ![Run Script in Container](media/container_job.png)
 
-    > Explain to the attendees that this benchmark application will usee 5000 RUs to test how long it takes to upload 10,000 documents. In our testing, this can take anywhere from 45-60 seconds.
+    > This benchmark application will blast the account with writes. Explain to the attendees that this benchmark application will usee 5000 RUs to test how long it takes to upload 10,000 documents. In our testing, this can take anywhere from 45-60 seconds.
     
 1. Click on the **Resource Groups** link in the portal, and then select the sole **Azure Cosmos DB** resource.
 
@@ -202,7 +204,7 @@ For the first demo, we will compare write performance at two different throughpu
   
 1. In the settings pane, change the throughput of the collection from ``2000`` to ``10000`` RUs (request units).
 
-    > Let the attendees know that we are exponentially increasing the RUs by five times.
+    > Let the attendees know that we are exponentially increasing the RUs by five times. Point out that we have now elastically scaled our database by only changing a simple field and clicking a save button.
 
 1. Click the **Save** button at the top of the settings pane.
 
@@ -220,10 +222,60 @@ For the first demo, we will compare write performance at two different throughpu
     ./cosmosbenchmark --location westus --type write --database TestDatabase --collection ThroughputDemo --throughput 10000
     ```
 
-    > Point out to attendees the difference in performance between the two benchmarks. In our testing, the second benchmark completed 5-10 seconds.
+    > Point out to attendees the difference in performance between the two benchmarks. In our testing, the second benchmark completed in 5-10 seconds.
+
+    > If an attendee ask why we are "telling" the benchmark application about our throughput, this is to avoid rate limiting. Our benchmark application is using a simple math formula to determine how much data it can send in parallel while avoiding rate limiting for the entire collection. If we didn't tell the benchmark application about our throughput limit, it could potentially send too much data at once and get a HTTP 429 error code.
 
 ## More Reading
 
 If attendees want to learn more about scaling throughput in Azure Cosmos DB, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/request-units>
+
+===
+
+# Azure Cosmos DB Performance
+
+For the next demo, we will run a script that uses a high-resolution timer to measure the read performance between different Azure Container Instances across various Azure regions and a multi-region Azure Cosmos DB instance. Our intention is to show how having multiple read regions for an Azure Cosmos DB account will make it functionally behave like a CDN for dynamic data.
+
+## Step-by-step instructions
+
+1. 
+
+1.
+
+1.
+
+1.
+
+1.
+
+1.
+
+    ```
+    ./cosmosbenchmark --location westus --type read --database TestDatabase --collection ThroughputDemo
+    ```
+
+1.
+
+1.
+
+1.
+
+## More Reading
+
+If attendees want to learn more about Azure Cosmos DB and global distribution, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/distribute-data-globally>
+
+===
+
+# Document Flexibility using Azure Cosmos DB
+
+For the last demo, we will populate our Azure Cosmos DB instance with various documents that do not conform to a standardized schema or structure. We are going to take advantage of the automatic indexing and flexible nature of Azure Cosmos DB to query for documents based on fields that may or may not be in every document.
+
+## Step-by-step instructions
+
+1. 
+
+## More Reading
+
+If attendees want to learn more about modeling flexibly structed data in Azure Cosmos DB, it is recommended that they read the following article: <https://docs.microsoft.com/azure/cosmos-db/modeling-data>
 
 ===
