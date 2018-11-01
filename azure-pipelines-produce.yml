@@ -7,6 +7,8 @@ steps:
   displayName: 'Update package manager'
 - script: sudo apt-get install pandoc
   displayName: 'Install pandoc'
+- script: mkdir out
+  displayName: 'Create temporary output directory'
 - script: pandoc readme.md -s --wrap=none -o out/demo.docx
   displayName: 'Create Word document'
 - task: PublishBuildArtifacts@1
