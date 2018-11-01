@@ -119,9 +119,9 @@ Throughout this setup section, we will share animated images that will help you 
 
     ![Save New Document](media/save_document.gif)
 
-1. Finally in the Data Explorer, select the **DeviceDataCollection** collection and then click the **Settings** option.
+1. Finally in the Data Explorer, select the **DeviceDataCollection** collection and then click the **Scale and Settings** option.
 
-    ![Collection Settings]()
+    ![Collection Settings](media/settings.png)
 
 1. In the settings pane, change the throughput of the collection to ``10000`` RUs (request units).
 
@@ -129,7 +129,7 @@ Throughout this setup section, we will share animated images that will help you 
 
 1. Click the **Save** button at the top of the settings pane.
 
-    ![Save Settings]()
+    ![Save Settings](media/scale_down.png)
 
 ===
 
