@@ -1,0 +1,7 @@
+pool:
+  vmImage: 'Ubuntu 16.04'
+variables:
+  fileName: 
+steps:
+- script: sudo apt-get update
+  displayName: 'Update package manager'
