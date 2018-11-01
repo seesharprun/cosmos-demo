@@ -88,16 +88,6 @@ Throughout this setup section, we will share animated images that will help you 
 
     ![Execute Query](media/execute_query.png)
 
-1. Enter and execute the following command:
-
-    ```
-    SELECT COUNT(1) FROM data
-    ```
-
-1. Click the **Documents** link under the **DeviceDataCollection** node and then click the **New Document** button.
-
-    ![New Document](media/new_document.gif)
-
 1. In the document editor, enter the following JSON content:
 
     ```
