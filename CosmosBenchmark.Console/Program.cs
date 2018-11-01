@@ -51,7 +51,7 @@ namespace CosmosBenchmark
 
             policy.ConnectionMode = ConnectionMode.Direct;
             policy.ConnectionProtocol = Protocol.Tcp;
-            policy.SetCurrentLocation(options.Location.GetDisplayShortName());
+            policy.SetCurrentLocation(options.Location.GetDisplayName());
 
             settings.EndpointUri = new Uri(endpointUrl, UriKind.Absolute);
             settings.PrimaryKey = primaryKey;

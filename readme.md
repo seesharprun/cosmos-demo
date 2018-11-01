@@ -334,15 +334,45 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     ![Read Benchmark - West US to Southeast Asia](media/)
 
-1. 
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-southeastasia-** in the name.
 
-1.
+    ![Southeast Asia Container Instance](media/)
 
-1.
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
 
-1.
+1. In the **Containers** section, locate and click the **Connect** tab.
 
-1.
+1. In the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+1. Within the container, run the following command to benchmark the read performance of your Azure Cosmos DB instance using the same region as the container:
+
+    ```
+    ./cosmosbenchmark --location southeastasia --type read --database IoTDatabase --collection DeviceDataCollection
+    ```
+
+    > We are now using the **Southeast Asia** container instance to try and read data from the Azure Cosmos DB **Southeast Asia** read region. You can see a  performance difference here. We have "cheated" the speed of light by bringing the data closer to the application/client.
+
+    ![Read Benchmark - Southeast Asia to Southeast Asia](media/)
+
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-northeurope-** in the name.
+
+    ![North Europe Container Instance](media/)
+
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+1. In the **Containers** section, locate and click the **Connect** tab.
+
+1. In the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+1. Within the container, run the following command to benchmark the read performance of your Azure Cosmos DB instance using the same region as the container:
+
+    ```
+    ./cosmosbenchmark --location northeurope --type read --database IoTDatabase --collection DeviceDataCollection
+    ```
+
+    > Since we have multiple clients and multiple Azure Cosmos DB read locations. We essentially have a CDN for dynamic data.
+
+    ![Read Benchmark - North Europe to North Europe](media/)
 
 ## More Reading
 
