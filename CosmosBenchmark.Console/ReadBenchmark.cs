@@ -34,26 +34,28 @@ namespace CosmosBenchmark
             Document randomDocument = GetRandomDocument(client, settings, collectionSetting, collection);
             RequestOptions options = new RequestOptions
             {
-                PopulateQuotaInfo = true
+                PopulateQuotaInfo = true,
+                PartitionKey = new PartitionKey($"{collectionSetting.PartitionId}")
             };
 
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
-            ResourceResponse<Document> response = await client.ReadDocumentAsync(randomDocument.SelfLink);
+            ResourceResponse<Document> response = await client.ReadDocumentAsync(randomDocument.SelfLink, options);
 
             watch.Stop();
             
             await Console.Out.WriteLineAsync();
             await Console.Out.WriteLineAsync("Summary:");
             await Console.Out.WriteLineAsync("--------------------------------------------------------------------- ");
-            await Console.Out.WriteLineAsync($"Total Time Elapsed:\t{watch.Elapsed}");
-            await Console.Out.WriteLineAsync($"Request Units Used:\t{response.RequestCharge} RUs");
+            await Console.Out.WriteLineAsync($"Request Units:\t{response.RequestCharge} RUs");
+            await Console.Out.WriteLineAsync($"Stopwatch Time:\t{watch.Elapsed}");
+            await Console.Out.WriteLineAsync($"SDK Time:\t{response.RequestLatency}");
+            await Console.Out.WriteLineAsync($"Diagnostics: {response.RequestDiagnosticsString}");
             await Console.Out.WriteLineAsync("--------------------------------------------------------------------- ");
             await Console.Out.WriteLineAsync();
             await Console.Out.WriteLineAsync();
             await Console.Out.WriteLineAsync();
-
         }
 
         private Document GetRandomDocument(DocumentClient client, CosmosSettings settings, CollectionSettings collectionSetting, DocumentCollection collection)
@@ -68,7 +70,7 @@ namespace CosmosBenchmark
                 MaxItemCount = 1,
                 PartitionKey = new PartitionKey($"{collectionSetting.PartitionId}")
             };
-            return client.CreateDocumentQuery<Document>(collection.SelfLink, query, options).Single<Document>();
+            return client.CreateDocumentQuery<Document>(collection.SelfLink, query, options).AsEnumerable<Document>().Single<Document>();
         }
 
         private async Task<Database> EnsureDatabaseResourceAsync(DocumentClient client, string databaseId)

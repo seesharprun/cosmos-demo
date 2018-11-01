@@ -42,7 +42,6 @@ namespace CosmosBenchmark
 
             await Console.Out.WriteLineAsync($"Database:\t{options.Database}");
             await Console.Out.WriteLineAsync($"Collection:\t{options.Collection}"); 
-            await Console.Out.WriteLineAsync($"Throughput:\t{options.Throughput}");
 
             ConnectionPolicy policy = new ConnectionPolicy();
             CosmosSettings settings = new CosmosSettings();
