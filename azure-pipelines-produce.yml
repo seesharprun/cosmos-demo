@@ -5,3 +5,10 @@ variables:
 steps:
 - script: sudo apt-get update
   displayName: 'Update package manager'
+- script: sudo apt-get install pandoc
+  displayName: 'Install pandoc'
+- script: pandoc readme.md -o out/demo.docx --wrap=none
+  displayName: 'Create Word document'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: out
