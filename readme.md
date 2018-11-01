@@ -83,7 +83,7 @@ Throughout this setup section, we will share animated images that will help you 
     SELECT * FROM data
     ```
 
-1. Press the **Execute** button to issue the query and observe the query results.
+1. Click the **Execute Query** button to issue the query and observe the query results.
 
     ![Execute Query](media/execute_query.png)
 
@@ -270,7 +270,7 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
     > We know that there is a device out there with a Device Id of "00000000-0000-0000-0000-000000000000". This query will return the first record associated with that partition key. 
 
-1. Press the **Execute** button to issue the query and observe the query results.
+1. Click the **Execute Query** button to issue the query and observe the query results.
 
     ![Execute Query](media/execute_query_2.png)
 
@@ -408,19 +408,291 @@ For the last demo, we will populate our Azure Cosmos DB instance with various do
 
 1. To start, we will go into the Azure Cosmos DB account. This can be accomplished by clicking on the **Resource Groups** link in the portal, selecting your previously created group, and then selecting the sole **Azure Cosmos DB** resource.
 
-    ![Selecting Azure Cosmos DB account](media/)
+    ![Selecting Azure Cosmos DB account](media/cosmos_account_3.png)
 
 1. In the Azure Cosmos DB resource's blade, select the **Data Explorer** option.
 
-    ![Data Explorer](media/)
+    ![Data Explorer](media/data_explorer_3.png)
 
-1. In the **Data Explorer**, locate and expand the existing **IoTDatabase** database. Then select the **DeviceDataCollection** collection.
+1. In the **Data Explorer**, click the **New Collection** button.
 
-    ![Pre-Created Collection](media/)
+    ![New Collection](media/new_collection_2.png)
 
-    > We are creating a new collection
+    > You can call out to attendees that you will create a new collection where you intend to perform the demo.
+
+1. In the **New Collection** popup, perform the following actions:
+
+    1. In the **Database id** section, select the **Create new** option, and enter the value ``DynamicDatabase`` in *Type a new database id* field.
+
+    1. Ensure that the **Provision database throughput** checkbox is not selected.
+
+    1. In the **Collection id** field, enter the value ``DataRepository``.
+
+    1. In the **Storage capacity** section, select the **Fixed (10 GB)** option.
+
+    1. In the **Throughput** section, enter the value ``1000``.
+
+    1. Click the **OK** button.
+
+    1. Wait for the new database and collection to be created.
+
+    ![New Collection Options](media/new_collection_settings_2.png)
+
+1. In the **Data Explorer**, locate and expand the newly created **DynamicDatabase** database. Then select and expand the **DataRepository** collection.
+
+    ![New Collection Node](media/new_collection_node.png)
+
+1. Click the **Open Full Screen** button to open a dialog giving multiple options to view the Data Explorer in full-screen mode. Select the **Read-Write** option and then click the **Open** button to open the Data Explorer in full-screen mode.
+
+    ![Full Screen Button](media/full_screen_button.png)
+
+    ![Full Screen Options](media/full_screen_options.png)
+
+    ![Full Screen Mode](media/full_screen_mode.png)
+
+    > The remaining demo instructions and screenshots will assume that you are in full-screen mode.
+
+1. Locate and expand the **DynamicDatabase** database. Then select and expand the **DataRepository** collection.
+
+    > We now have a clustered database that is partitioned across machines for both scalability and performance. As a developer, we want to be able add documents to this database's collections.
+
+    ![DataRepository Collection](media/selected_collection.png)
+
+    > In this example scenario, we have a collection of contact information coming from many different third-party systems that collects and sends us leads for customers.
+
+1. Click the **Documents** option.
+
+    ![Documents Option](media/documents_option.png)
+
+1. Click the **New Document** button.
+
+    ![New Document Button](media/new_document.png)
+
+1. In the document editor, enter the following JSON content:
+
+    ```
+    {
+        "name": "Jeannette Kjaer",
+        "permissionToCall": true,
+        "phoneNumber": {
+            "home": "+1 555-555-1234",
+            "work": "+1 555-555-5678 x901"
+        },
+        "mailingAddress": {
+            "streetAddress": "123 Anywhere St.",
+            "city": "Springfield",
+            "state": "MO",
+            "postal": 99999
+        }
+    }
+    ```
+
+    > This first example document comes from a company that has child fields within an embedded document for the contact information. 
+
+1. Click the **Save** button to persist the document and then observe the newly created document.
+
+    ![Save New Document](media/save_document.png)
 
 1. Click the **New SQL Query** button.
+
+    ![New SQL Query](media/new_query.png)
+
+    > Since we know the structure of the first JSON document, we can make some simple SQL queries.
+
+1. In the **New SQL Query** window, enter the following SQL command:
+
+    ```
+    SELECT * FROM contacts
+    ```
+
+1. Click the **Execute Query** button to issue the query and observe the query results.
+
+    ![Execute Query Button](media/execute_query_button.png)
+
+    ![Execute Query](media/execute_query_results_2.png)
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT c.phoneNumber.home AS homeNumber
+    FROM contacts c
+    WHERE c.permissionToCall = true
+    ```
+
+    ![Execute Query](media/query_results_1.png)
+
+    > This query returns a flattened array of phones numbers that we are allowed to call. It filters on the ``permissionToCall`` field. Point out to attendees that Azure Cosmos DB returns a full object for every query results.
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT VALUE c.phoneNumber.home
+    FROM contacts c
+    WHERE c.permissionToCall = true
+    ```
+
+    ![Execute Query](media/query_results_2.png)
+
+    > This query is the same as the previous query but it flattens the results into a simple JSON array of strings. This makes it easier for client applications to parse the query results. To give attendees a code example; in .NET you can deserialize this into a ``List<string>`` instead of creating a new C# class with a single property.
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT 
+        c.name, 
+        c.phoneNumber.home AS homeNumber, 
+        CONCAT(c.mailingAddress.streetAddress, " ", c.mailingAddress.city, ", ", c.mailingAddress.state, " ", ToString(c.mailingAddress.postal)) AS address
+    FROM contacts c
+    WHERE c.permissionToCall = true
+    ```
+
+    ![Execute Query](media/query_results_3.png)
+
+    > This is a more complex query that takes into account some of the nuances of the way the individual's address is stored.
+
+1. Within the **DataRepository** collection, click the **Scale & Settings** option.
+
+    ![Scale and Settings](media/scale_settings.png)
+
+1. Within the **Scale and Settings** tab, locate and observe the **Indexing Policy**:
+
+    ![Indexing Policy](media/indexing_policy.png)
+
+    > By default, all Azure Cosmos DB data is indexed. The indexing policy that is displayed will effectively index all paths in the JSON document. In Azure Cosmos DB, you can design and customize the shape of the index without sacrificing schema flexibility. Let attendees know that they can always tune and change the index if they want to "squeeze a little more performance" out of their collection by making specific strategic compromises in flexibility.
+
+    > For today's demo, we can take advantage of the schema-agnostic nature of Azure Cosmos DB by adding in JSON documents that do not conform to the same JSON schema. Since we are automatically indexing all paths, we will be able to flexibly query on properties that may not be in all documents.
+
+1. Within the **DataRepository** collection, click the **Documents** option.
+
+    > What if we need to change a document in the database, will that cause migrations or downtime? In our example scenario, we found out that other companies have an **active** field while the first company assumes all documents are active. To solve this, we need to add a property named **active** set to a value of **true** to our existing document[s]. In a RDBMS, we would have to write migration scripts that would alter tables, rebuild indexes and move data. We would also have to deploy these migration scripts across multiple machines while avoiding downtime. This is prohibitively difficult.
+
+1. In the **Documents** tab, select the single document that you created earlier in this demo.
+
+    ![Single Document](media/single_document.png)
+
+1. In the document editor, add a new property named **active** and set it's value to **true**:
+
+    ```
+    "active": true
+    ```
+
+    ![Modify Document](media/modify_document.png)
+
+1. Click the **Update** button to persist the document's changes.
+
+    ![Save Modified Document](media/save_modified_document.png)
+
+1. Click the **New SQL Query** button.
+
+1. In the **New SQL Query** window, enter the following SQL command:
+
+    ```
+    SELECT 
+        c.name, 
+        c.phoneNumber.home AS homeNumber, 
+        CONCAT(c.mailingAddress.streetAddress, " ", c.mailingAddress.city, ", ", c.mailingAddress.state, " ", ToString(c.mailingAddress.postal)) AS address,
+        c.active
+    FROM contacts c
+    WHERE c.permissionToCall = true
+    ```
+
+    > We are updating our earlier query to include the new **active** property. Our automatic indexer has already "picked up" this property and we can use it immediately in queries.
+
+1. Click the **Execute Query** button to issue the query and observe the query results.
+
+    ![Execute Query](media/query_results_4.png)
+
+1. Within the **DataRepository** collection, click the **Documents** option.
+
+    > Introduce a potential scenario to attendees. "What if we have a second company that we work with that provides JSON document in an entirely different structure?". Essentially, we need to use new properties in the next document. In a RDBMS, we would need to either expand the existing table or build a new table. Just like with changing a document, this can be prohibitively difficult.
+
+1. Click the **New Document** button.
+
+1. In the document editor, enter the following JSON content:
+
+    ```
+    {
+        "name": "Adam Brooks",
+        "permissionToCall": true,
+        "phoneNumbers": [
+            "+1 555-555-9999"
+        ],
+        "address": "345 Somewhere Ave. Springfield, MO 99999",
+        "active": false
+    }
+    ```
+
+    > This second example document comes from a different company that has a relatively flatter JSON document structure. Since we are familiar with the vendor, we can make some assumptions about this document. For example, we know the first phone number in the array is always the home phone number. This record does not have a work phone number.
+
+1. Click the **Save** button to persist the document and then observe the newly created document.
+
+    ![Saved Document](media/second_document.png)
+
+    > The "solution" to our problem is to use a schema-agnostic database like Azure Cosmos DB that automatically indexes all paths from all documents. We now have an inverted index that contains information from fields that exist in either document in our collection.
+
+1. Click the **New SQL Query** button.
+
+1. In the **New SQL Query** window, enter the following SQL command:
+
+    ```
+    SELECT 
+        c.name,
+        c.phoneNumber
+    FROM 
+        contacts c    
+    ```
+
+    > If you attempt to return a property that exists in some documents and not others, the query can safely "skip" that property in documents where it doesn't exist.
+
+    ![Execute Query](media/query_results_5.png)
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT 
+        * 
+    FROM 
+        contacts c
+    WHERE
+        c.mailingAddress.state = "MO"
+    ```
+
+    ![Execute Query](media/query_results_6.png)
+
+    > If you try to filter on a property that only exists in some documents, the query results will only include documents that contain the properties specified in the filter[s].
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT 
+        * 
+    FROM 
+        contacts c
+    WHERE
+        IS_DEFINED(c.phoneNumbers)
+    ```
+
+    ![Execute Query](media/query_results_7.png)
+
+    > This query can find documents that have specific properties using the special ``IS_DEFINED`` function.
+
+1. Enter and execute the following command:
+
+    ```
+    SELECT 
+        c.name, 
+        IS_DEFINED(c.phoneNumbers) ? c.phoneNumbers[0] : c.phoneNumber.home AS homeNumber, 
+        c.address ?? CONCAT(c.mailingAddress.streetAddress, " ", c.mailingAddress.city, ", ", c.mailingAddress.state, " ", ToString(c.mailingAddress.postal)) AS address,
+        c.active
+    FROM contacts c
+    WHERE c.permissionToCall = true
+    ```
+
+    > This query includes many of the unique operations in the Azure Cosmos DB SQL API's query language that allows us to construct a single query that can work across multiple documents with different schemas. Point out to attendees that some of the operators used here (Ternary and Coalesce) are very similar to the C# counterparts.
+
+1. Click the **Execute Query** button to issue the query and observe the query results.
+
+    ![Execute Query](media/query_results_8.png)
 
 ## More Reading
 
