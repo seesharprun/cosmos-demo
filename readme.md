@@ -7,6 +7,12 @@ This demo script will help you demonstrate Azure Cosmos DB to an audience. The s
 
 ===
 
+# Demo notes
+
+- The resource names may change in the screenshots. This occurs because the ARM template dynamically generates a unique name each time a demo is performed. You can safely disregard the resource names.
+
+===
+
 # Demo setup
 
 This section should be completed prior to starting the demo. In this section, you will deploy the following resources:
@@ -166,7 +172,7 @@ For the first demo, we will compare write performance at two different throughpu
 
     ![New Collection Options](media/new_collection_settings.png)
 
-1. Click on the **Resource Groups** link in the portal, and then select the **Container instances** resource with **-westus-** in the name.
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-westus-** in the name.
 
     ![West US Container Instance](media/container_instance_westus.png)
 
@@ -194,7 +200,7 @@ For the first demo, we will compare write performance at two different throughpu
 
     > This benchmark application will blast the account with writes. Explain to the attendees that this benchmark application will usee 5000 RUs to test how long it takes to upload 10,000 documents. In our testing, this can take anywhere from 45-60 seconds.
     
-1. Click on the **Resource Groups** link in the portal, and then select the sole **Azure Cosmos DB** resource.
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the sole **Azure Cosmos DB** resource.
 
 1. In the Azure Cosmos DB resource's blade, select the **Data Explorer**.
 
@@ -210,7 +216,7 @@ For the first demo, we will compare write performance at two different throughpu
 
     ![Collection Throughput](media/collection_throughput.png)
 
-1. Click on the **Resource Groups** link in the portal, and then select the **Container instances** resource with **-westus-** in the name.
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-westus-** in the name.
 
 1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
 
@@ -238,21 +244,99 @@ For the next demo, we will run a script that uses a high-resolution timer to mea
 
 ## Step-by-step instructions
 
+1. To start, we will go into the Azure Cosmos DB account. This can be accomplished by clicking on the **Resource Groups** link in the portal, selecting your previously created group, and then selecting the sole **Azure Cosmos DB** resource.
+
+    ![Selecting Azure Cosmos DB account](media/cosmos_account_2.png)
+
+1. In the Azure Cosmos DB resource's blade, select the **Data Explorer** option.
+
+    ![Data Explorer](media/data_explorer_2.png)
+
+1. In the **Data Explorer**, locate and expand the existing **IoTDatabase** database. Then select the **DeviceDataCollection** collection.
+
+    ![Pre-Created Collection](media/data_explorer_collection.png)
+
+    > Call out to attendees that you have pre-created a collection with 50,000 documents. We will use this collection in our read benchmark.
+
+1. Click the **New SQL Query** button.
+
+    ![New SQL Query](media/new_sql_query.png)
+
+1. In the **New SQL Query** window, enter the following SQL command:
+
+    ```
+    SELECT TOP 1 * FROM data WHERE data.DeviceId = "00000000-0000-0000-0000-000000000000"
+    ```
+
+    > We know that there is a device out there with a Device Id of "00000000-0000-0000-0000-000000000000". This query will return the first record associated with that partition key. 
+
+1. Press the **Execute** button to issue the query and observe the query results.
+
+    ![Execute Query](media/execute_query_2.png)
+
+    ![Execute Query](media/execute_query_results.png)
+
+    > This is the record we will use when we test read performance.
+
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-westus-** in the name.
+
+    ![West US Container Instance](media/container_instance_westus_2.png)
+
+    > Point out to attendees that you are selecting a container that is running in the same region as your Azure Cosmos DB account. In the absence of global distribution, we would have to send requests around the world. This can create a lot of latency. To reduce latency, we deployed this Azure Container Instance to the same region as our Azure Cosmos DB account.
+
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+    ![Container Settings](media/container_settings_2.png)
+
+1. In the **Containers** section, locate and click the **Connect** tab.
+
+    ![Connect Tab](media/container_tabs_2.png)
+
+1. In the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+    ![Connect to Container Using Bash Shell](media/connect_container_2.png)
+
+1. Within the container, run the following command to benchmark the read performance of your Azure Cosmos DB instance:
+
+    ```
+    ./cosmosbenchmark --location westus --type read --database IoTDatabase --collection DeviceDataCollection
+    ```
+
+    > This read operation was very fast. We can attribute this to the fact that we have both our Azure Cosmos DB account and our container instance in the same region.
+
+    ![Read Benchmark - West US to West US](media/read_west_results.png)
+
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the sole **Azure Cosmos DB** resource again.
+
+1. In the Azure Cosmos DB resource's blade, select the **Replicate data globally** option.
+
+    ![Replicate Globally Option](media/replicate_data.png)
+
+1. Observe that the database is already replicated to the **West US**, **Southeast Asia**, and **North Europe** regions.
+
+    ![Replication Destinations](media/replication_destinations.png)
+    
+1. Click on the **Resource Groups** link in the portal, selecting your previously created group, and then select the **Container instances** resource with **-westus-** in the name.
+
+1. In the **Settings** section of the container instance, select the **Containers** option to view your current container.
+
+1. In the **Containers** section, locate and click the **Connect** tab.
+
+1. In the **Connect** tab, select the **/bin/bash** option and then click the **Connect** button to connect to the running container.
+
+1. Within the container, run the following command to benchmark the read performance of your Azure Cosmos DB instance using a different region:
+
+    ```
+    ./cosmosbenchmark --location southeastasia --type read --database IoTDatabase --collection DeviceDataCollection
+    ```
+
+    > We are using our **West US** container instance to try and read data from the Azure Cosmos DB **Southeast Asia** read region. Unfortunately, our request has to be sent around the world and this causes a lot of latency. No matter what, you can't beat the speed of light (physics).
+
+    ![Read Benchmark - West US to Southeast Asia](media/)
+
 1. 
 
 1.
-
-1.
-
-1.
-
-1.
-
-1.
-
-    ```
-    ./cosmosbenchmark --location westus --type read --database TestDatabase --collection ThroughputDemo
-    ```
 
 1.
 

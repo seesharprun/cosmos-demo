@@ -49,10 +49,9 @@ namespace CosmosBenchmark
             configuration.GetSection(nameof(ConnectionPolicy)).Bind(policy);
             configuration.GetSection(nameof(CosmosSettings)).Bind(settings);
 
-            policy.UseMultipleWriteLocations = true;
             policy.ConnectionMode = ConnectionMode.Direct;
             policy.ConnectionProtocol = Protocol.Tcp;
-            policy.PreferredLocations.Add(options.Location.GetDisplayShortName());
+            policy.SetCurrentLocation(options.Location.GetDisplayShortName());
 
             settings.EndpointUri = new Uri(endpointUrl, UriKind.Absolute);
             settings.PrimaryKey = primaryKey;
